@@ -30,22 +30,26 @@ function App() {
     <Routes>
       <Route path="/" element = {<Layout />}>
         {/**public routes */}
-      <Route index element={<Login />} />
-      <Route path="login" element = { <Login /> }/>
-        <Route path="register" element = { <Register /> }/>
-        <Route path="adminLogin" element = { <Admin /> }/>
-        <Route path="unauthorized" element = { <Unauthorized /> }/>
+        <Route index element={<Login />} />
+        <Route path="login" element = { <Login /> }/>
+          <Route path="register" element = { <Register /> }/>
+          <Route path="adminLogin" element = { <Admin /> }/>
+          <Route path="unauthorized" element = { <Unauthorized /> }/>
         <Route path="guessPage" element = { <GuessPage /> }/>
 
         {/* private route */}
-        {/** prottect the route is the user are logged in */}
-        {/* <Route element = {<RequireAuth />}> 
+        {/** protect the route if the user are logged in */}
+        <Route element = {<RequireAuth allowedRoles={[ROLES.User]} />}> 
           <Route path="bookingTickets" element = { <BookingTickets /> }/>
-          <Route path="adminPage" element = { <AdminPage /> }/>
-        </Route> */}
+        </Route> 
 
-        <Route path="bookingTickets" element = { <BookingTickets /> }/>
-        <Route path="adminPage" element = { <AdminPage /> }/>
+        {/** protect the route if the user are logged in */}
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route path="adminPage" element = { <AdminPage /> }/>
+        </Route>
+
+        {/* <Route path="bookingTickets" element = { <BookingTickets /> }/>
+        <Route path="adminPage" element = { <AdminPage /> }/> */}
         
 
         {/* cath all */}
