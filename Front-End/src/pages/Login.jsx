@@ -98,7 +98,7 @@ export default function Login() {
           password: loginData.password,
         }),
         {
-          Headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true
         }
       );
