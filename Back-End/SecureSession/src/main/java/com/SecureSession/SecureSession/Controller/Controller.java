@@ -16,7 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
-@CrossOrigin(origins="http://localhost:5173")
+@CrossOrigin(origins="chrome-extension://amknoiejhlmhancpahfcfcfhllgkpbld")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/")

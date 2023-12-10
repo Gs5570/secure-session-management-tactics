@@ -20,13 +20,13 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     public AuthenticationResponse register(RegisterRequest request) {
-        var user= User.builder().username(request.getUserName()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
+        var user= User.builder().username(request.getUsername()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
         userRepo.save(user);
         var jwtToken=jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
     public AuthenticationResponse registerAdmin(RegisterRequest request) {
-        var user= User.builder().username(request.getUserName()).password(passwordEncoder.encode(request.getPassword())).role(Role.ADMIN).build();
+        var user= User.builder().username(request.getUsername()).password(passwordEncoder.encode(request.getPassword())).role(Role.ADMIN).build();
         userRepo.save(user);
         var jwtToken=jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();

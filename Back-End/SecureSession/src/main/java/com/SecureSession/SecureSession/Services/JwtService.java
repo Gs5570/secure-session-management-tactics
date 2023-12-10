@@ -31,7 +31,7 @@ public class JwtService {
     }
     public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails){
         log.debug("Generating token for username: {}", userDetails.getUsername());
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis()+(10000*60*24))).signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis()+(1000))).signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
     }
     public String generateToken(UserDetails userDetails) {
         log.debug("Generating token for username: {}", userDetails.getUsername());
