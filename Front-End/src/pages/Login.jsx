@@ -1,30 +1,28 @@
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useState } from "react";
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useState } from 'react';
 
-import LoginSuccess from "./LoginSuccess";
-import axios from "../api/axios";
+import LoginSuccess from './LoginSuccess';
+import axios from '../api/axios';
 
-import useAuth from "../hooks/useAuth";
+import useAuth from '../hooks/useAuth';
 // import { object, string, number, date, InferType } from 'yup';
 
-import "../styles/login.css";
+import '../styles/login.css';
 
 //end point for the login int back-end ( the path )
-const loginURL = "/login";
+const loginURL = '/login';
 
 export default function Login() {
-
-  const { setAuth } = useAuth;
+  const { setAuth, auth } = useAuth();
   const location = useLocation;
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || '/';
 
   const [user, setUser] = useState();
   const [password, setPassword] = useState();
-
 
   const [loggedInUser, setLoggedInUser] = useState({
     username: null,
@@ -33,15 +31,13 @@ export default function Login() {
   const [successLogin, setSuccessLogin] = useState(false);
   console.log(successLogin);
 
-  
-
   /**
    * navigate to registration page
    */
   const navigate = useNavigate();
 
   function redirectToRegister() {
-    navigate("/register");
+    navigate('/register');
   }
 
   /**
@@ -52,16 +48,16 @@ export default function Login() {
   const userSchema = yup.object().shape({
     username: yup
       .string()
-      .required("Username is require")
-      .min(5, "username is too short - should be 5 chars minimum."),
+      .required('Username is require')
+      .min(5, 'username is too short - should be 5 chars minimum.'),
     password: yup
       .string()
-      .min(5, "Password is too short - should be 5 chars minimum.")
-      .required("password is require")
-      .matches(/[a-z]+/, "One lowercase character")
-      .matches(/[A-Z]+/, "One uppercase character")
-      .matches(/[@$!%*#?&]+/, "One special character")
-      .matches(/\d+/, "One number"),
+      .min(5, 'Password is too short - should be 5 chars minimum.')
+      .required('password is require')
+      .matches(/[a-z]+/, 'One lowercase character')
+      .matches(/[A-Z]+/, 'One uppercase character')
+      .matches(/[@$!%*#?&]+/, 'One special character')
+      .matches(/\d+/, 'One number'),
   });
 
   //useFrom
@@ -98,18 +94,18 @@ export default function Login() {
           password: loginData.password,
         }),
         {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
         }
       );
       console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response));
 
       setUser(loginData.username);
-      setPassword(loginData.password)
-      const accessToken = response?.data?.accessToken;
+      setPassword(loginData.password);
+      const accessToken = response?.data?.token;
       const roles = response?.data?.roles;
-      setAuth({ user, password,roles, accessToken });
+      setAuth({ user, password, roles, accessToken });
       navigate(from, { replace: true });
 
       console.log(response);
@@ -123,11 +119,13 @@ export default function Login() {
       reset();
     } catch (err) {
       if (!err?.response) {
-        console.log("No server response");
+        console.log('No server response');
       }
       console.log(err);
     }
   };
+
+  console.log(auth);
 
   return (
     <>
@@ -142,11 +140,11 @@ export default function Login() {
             </span>
             <section className="labels-container">
               <label>
-                Username: <input type="text" {...register("username")} />
+                Username: <input type="text" {...register('username')} />
               </label>
               <span className="error">{errors.username?.message}</span>
               <label>
-                Password: <input type="password" {...register("password")} />
+                Password: <input type="password" {...register('password')} />
               </label>
               <span className="error">{errors.password?.message}</span>
             </section>
@@ -167,7 +165,7 @@ export default function Login() {
           <DevTool control={control} />
 
           <p>
-            {" "}
+            {' '}
             To use the system as guess click <Link to="/guessPage">here</Link>
           </p>
         </div>

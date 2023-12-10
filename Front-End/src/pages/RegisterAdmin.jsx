@@ -8,12 +8,14 @@ import { useState } from 'react';
 import { DevTool } from '@hookform/devtools';
 import { Link } from 'react-router-dom';
 
-const registerURL = '/register';
+import AdminPage from './AdminPage';
 
-export default function Register() {
+const registerURL = '/register/admin';
+
+export default function RegisterAdmin() {
   const [registerSuccess, setRegisterSuccess] = useState(false);
   const [errMsg, setErrMsg] = useState('');
-  const [registeredUser, setRegisteredUser] = useState({
+  const [registeredAdmin, setRegisteredAdmin] = useState({
     username: null,
     firstName: null,
     lastName: null,
@@ -21,8 +23,6 @@ export default function Register() {
     password: null,
     confPassword: null,
   });
-
-  //end point for the login int back-end ( the path )
 
   const navigate = useNavigate();
 
@@ -65,14 +65,13 @@ export default function Register() {
 
   /**
    * Form submission
-   * will automatically receive access to the form data through the parameter "registeredUser"*/
+   * will automatically receive access to the form data through the parameter "registeredAdmin"*/
   const onSubmit = async (registeredData) => {
     console.log('formsubmitted');
-    await setRegisteredUser((prevState) => {
+    await setRegisteredAdmin((prevState) => {
       return {
         ...prevState,
         username: registeredData.username,
-        email: registeredData.username,
         password: registeredData.password,
         confPassword: registeredData.confirmedPassword,
       };
@@ -87,12 +86,12 @@ export default function Register() {
       const response = await axios.post(
         registerURL,
         JSON.stringify({
-          username: registeredUser.username,
-          password: registeredUser.password,
-          // firstName: registeredUser.firstName,
-          // lastName: registeredUser.lastName,
-          // email: registeredUser.email,
-          // confPassword: registeredUser.confPassword
+          username: registeredAdmin.username,
+          password: registeredAdmin.password,
+          // firstName: registeredAdmin.firstName,
+          // lastName: registeredAdmin.lastName,
+          // email: registeredAdmin.email,
+          // confPassword: registeredAdmin.confPassword
         }),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -100,7 +99,10 @@ export default function Register() {
         }
       );
 
-      setRegisterSuccess(true);
+      //   setRegisterSuccess(true);
+      if ((registeredData.password && registeredData.username) !== null) {
+        setRegisterSuccess(true);
+      }
 
       // response from the server saved  in the data property
       console.log(response.data);
@@ -121,44 +123,48 @@ export default function Register() {
     }
   };
 
-  console.log(registeredUser);
+  console.log(registeredAdmin);
 
   return (
-    <div>
-      <form>
-        <h1>Welcome</h1>
-        <span>
-          <p>Please Register</p>
-        </span>
-        <section className="labels-container">
-          <label>
-            Username: <input type="text" {...register('username')} />
-          </label>
-          <span className="error">{errors.username?.message}</span>
-          <span className="error">{errors.email?.message}</span>
-          <label>
-            Password: <input type="text" {...register('password')} />
-          </label>
-          <span className="error">{errors.password?.message}</span>
-          <label>
-            confirmPassword:{' '}
-            <input type="text" {...register('confirmedPassword')} />
-          </label>
-          <span className="error">{errors.confirmedPassword?.message}</span>
-        </section>
+    <>
+      {registerSuccess ? (
+        <AdminPage />
+      ) : (
+        <div>
+          <form>
+            <h1>Welcome</h1>
+            <span>
+              <p>Register as an Admin</p>
+            </span>
+            <section className="labels-container">
+              <label>
+                Username: <input type="text" {...register('username')} />
+              </label>
+              <span className="error">{errors.username?.message}</span>
 
-        <div className="buttons-container">
-          <button
-            type="button"
-            // disabled={!isDirty || !isValid}
-            onClick={handleSubmit(onSubmit)}
-          >
-            {' '}
-            Register{' '}
-          </button>
+              <label>
+                Password: <input type="text" {...register('password')} />
+              </label>
+              <span className="error">{errors.password?.message}</span>
+              <label>
+                confirmPassword:{' '}
+                <input type="text" {...register('confirmedPassword')} />
+              </label>
+              <span className="error">{errors.confirmedPassword?.message}</span>
+            </section>
+
+            <div className="buttons-container">
+              <button
+                type="button"
+                // disabled={!isDirty || !isValid}
+                onClick={handleSubmit(onSubmit)}
+              >
+                Register
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-      <DevTool control={control} />
-    </div>
+      )}
+    </>
   );
 }
