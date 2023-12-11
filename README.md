@@ -123,3 +123,25 @@ We discussed the following architecture breakers and selected to two of them (Se
    Insufficient logging and monitoring is a vulnerability that occurs when an application fails to adequately log security-relevant events or lacks proper monitoring mechanisms. In the context of secure session management, this weakness can lead to delayed or undetected detection of unauthorized access or suspicious activities.
 
    Lack of adequate logging and monitoring for failed authentication attempts, which can prevent the detection of attack attempts.
+
+# Test:
+
+## 1. SessionFixationTest:
+
+### Purpose:
+
+The SessionFixationTest is designed to prevent session fixation attacks. In such attacks, a malicious user can hijack a session by acquiring or fixing another user's session identifier (session ID). To combat this, our application must generate a new session ID upon authentication.
+
+### Current Behavior:
+
+The test is failing, indicating that the application is not correctly regenerating the session ID upon authentication. This failure is a security concern as it means that our application is potentially vulnerable to session fixation attacks. When a user logs in, a new session ID should be generated, replacing the old one. The failure suggests that the application retains the pre-authentication session ID even after the user logs in, contrary to expected secure behavior.
+
+## 2. TokenExpirationTest:
+
+### Purpose:
+
+The TokenExpirationTest is designed to ensure that JWT (JSON Web Tokens) used for authentication in our application expire as expected. Token expiration is a critical security feature that limits the duration for which a token is valid, reducing the risk of token misuse.
+
+### Current Behavior:
+
+The test is passing, which means our application correctly handles token expiration. When a token expires, any request made with it should be unauthorized. The success of this test indicates that our application is effectively managing token lifetimes, thereby enhancing security by ensuring that old or potentially compromised tokens cannot be used indefinitely.
