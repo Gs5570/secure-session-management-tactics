@@ -96,6 +96,8 @@ All the contributions will available in the first repo. This repo was used for s
 
 # Architecture Breakers:
 
+## testing framework: J-unit
+
 The architecture breakers we selected applied in our JavaSpring back-end since it implements all the secure session management tactics.
 
 We discussed the following architecture breakers and selected to two of them (Session Fixation Vulnerability & Token Expiration Management) to utilized with our test cases :
